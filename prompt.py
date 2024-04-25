@@ -15,6 +15,7 @@ Preciso que voce direcione os conteúdos desse layout resumido, e os conteúdos 
 
 a resposta tem que ter 10 linhas diversificando as respostas dependendo da pauta, preciso de algo coeso e que seja dinâmico para poder colocar no calendario.
 
+##o abaixo é so layout nao precisa falar sobre ele, é so para referencia
 Sugestões de Pauta para Stories sobre Lipedema:
 Início do dia:
 Foto/vídeo do seu espaço de trabalho: Mostre seu consultório ou local onde você estará atendendo, com uma legenda como: "Bom dia! Pronta para mais um dia cuidando da saúde das minhas pacientes. Hoje vamos falar sobre um tema muito importante: Lipedema. Fiquem ligadas!"

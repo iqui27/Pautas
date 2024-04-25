@@ -74,12 +74,13 @@ generated_pautas = ""
 if st.button("Gerar Pautas sem book"):
     if prompt_text and medico:
         pautas_text = extract_text_from_pdf(pautas_file) 
-        pautas = model.generate_content(f"Extruture o texto a seguir e mande os nomes completos das pautas para post no instagram que estao marcados com datas enumerando elas: {pautas_text}")
-        pautas_lines = pautas.text.strip().split("\n")
+        pautas = model.generate_content(f"pegues os nomes completos das pautas elas estao com a data ao lado para fazer post no instagram mande apenas os nomes das pautas como resposta separadas por *: {pautas_text}")
+        pautas_lines = pautas.text.strip().split("*")
+        st.write(pautas_lines)
         generated_pautas = ""
         progress_bar = st.progress(0)
         for i, pauta_line in enumerate(pautas_lines):
-            generated_pautas = model.generate_content(f"@@@System: {prompt_text}@@@ faça a pauta para {medico} seguindo o layout padrão e coloca o nome da pauta completa no titulo sem alterar: {pauta_line}")
+            generated_pautas = model.generate_content(f"@@@System: {prompt_text}@@@ o {medico} faça as pautas a seguir seguindo o layout padrão e coloca o nome da pauta completa no titulo sem alterar: {pauta_line}")
             st.divider()
             st.write(generated_pautas.text)
             progress_bar.progress((i + 1) / len(pautas_lines))
@@ -91,8 +92,8 @@ if st.button("Gerar Pautas com book"):
     if prompt_text:
         pautas_text = extract_text_from_pdf(pautas_file)
         book_text = extract_text_from_pdf(pdf_file) 
-        pautas = model.generate_content(f"Extruture o texto a seguir e mande os nomes completos das pautas para post no instagram que estao marcados com datas enumerando elas: {pautas_text}")
-        pautas_lines = pautas.text.strip().split("\n")
+        pautas = model.generate_content(f"pegues os nomes completos das pautas elas estao com a data ao lado para fazer post no instagram mande apenas os nomes das pautas como resposta separadas por *: {pautas_text}")
+        pautas_lines = pautas.text.strip().split("*")
         generated_pautas = ""
         progress_bar = st.progress(0)
         for i, pauta_line in enumerate(pautas_lines):
