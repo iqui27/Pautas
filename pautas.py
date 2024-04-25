@@ -42,19 +42,6 @@ def extract_text_from_pdf(pdf_file):
 # Inicialize a variável `extracted_text` fora do bloco if
 extracted_text = ""
 pautas_text = ""
-if st.button("Extract Text"):
-    if pdf_file is not None and pautas_file is not None:
-        try:
-            extracted_text = extract_text_from_pdf(pdf_file)
-            st.write(extracted_text)
-            pautas_text = extract_text_from_pdf(pautas_file)
-            st.write(pautas_text)
-            st.success("Text extracted successfully.")
-
-        except Exception as e:
-            st.error(f"An error occurred: {str(e)}")
-    else:
-        st.error("Please upload both a PDF file and pautas file.")
 pautas = "" 
 # Inicializa a lista de pautas no estado da sessão se ela ainda não existe
 if 'pautas_list' not in st.session_state:
