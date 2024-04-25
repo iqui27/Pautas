@@ -4,6 +4,7 @@ import fitz  # PyMuPDF
 import google.generativeai as genai
 import os
 from prompt import prompt_text
+import time
 
 
 with open('secrets.txt', 'r') as file:
@@ -73,10 +74,13 @@ if st.button("Gerar Pautas sem book"):
         pautas = model.generate_content(f"Extruture o texto a seguir e mande os nomes completos das pautas para post no instagram que estao marcados com datas enumerando elas: {pautas_text}")
         pautas_lines = pautas.text.strip().split("\n")
         generated_pautas = ""
-        for pauta_line in pautas_lines:
+        progress_bar = st.progress(0)
+        for i, pauta_line in enumerate(pautas_lines):
             generated_pautas = model.generate_content(f"@@@System: {prompt_text}@@@ faça a pauta seguindo o layout padrão e coloca o nome da pauta completa no titulo sem alterar: {pauta_line}")
             st.divider()
             st.write(generated_pautas.text)
+            progress_bar.progress((i + 1) / len(pautas_lines))
+            time.sleep(1)  # Simulate some processing time
     else:
         st.error("Please upload both a PDF file and pautas file before generating pautas.")
 
@@ -87,10 +91,12 @@ if st.button("Gerar Pautas com book"):
         pautas = model.generate_content(f"Extruture o texto a seguir e mande os nomes completos das pautas para post no instagram que estao marcados com datas enumerando elas: {pautas_text}")
         pautas_lines = pautas.text.strip().split("\n")
         generated_pautas = ""
-        for pauta_line in pautas_lines:
-            generated_pautas = model.generate_content(f"@@@System: {prompt_text}@@@ use as informacoes do medico a seguir: {book_text} e faça a pauta seguindo o layout padrão e coloca o nome da pauta completa no titulo sem alterar: {pauta_line}")
+        progress_bar = st.progress(0)
+        for i, pauta_line in enumerate(pautas_lines):
+            generated_pautas = model.generate_content(f"@@@System: {prompt_text}@@@ use as informacoes do medico a seguir: {book_text} e faça a pauta seguindo o layout padrão e coloca o nome da pauta completa no titulo sem alterar: {pauta_line}", stream=True)
             st.divider()
             st.write(generated_pautas.text)
+            progress_bar.progress((i + 1) / len(pautas_lines))
     else:
         st.error("Please upload both a PDF file and pautas file before generating pautas.")
 
@@ -103,7 +109,8 @@ if st.button("Gerar Pautas manuais"):
             generated_pauta = f"@@@System: {prompt_text}@@@ faça a pauta seguindo o layout padrão e coloque o nome da pauta completa no titulo sem alterar: {pauta_line}"
             # Suponha que model.generate_content() é uma função que você já tem
             generated_pautas = model.generate_content(generated_pauta)
-            st.write(generated_pautas.text)
+            with st.spinner('Gerando pautas...'):
+                st.write(generated_pautas.text)
     else:
         st.error("Por favor, adicione pelo menos uma pauta antes de gerar.")
 
