@@ -6,9 +6,9 @@ import os
 from prompt import prompt_text
 
 
+with open('secrets.txt', 'r') as file:
+    api_key = file.read().strip()
 
-# Imprimir a chave API para verificar se está sendo lida corretamente
-api_key = os.environ.get("API_KEY")
 print("API Key:", api_key)
 
 if api_key is None:
