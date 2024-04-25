@@ -48,6 +48,9 @@ pautas = ""
 if 'pautas_list' not in st.session_state:
     st.session_state['pautas_list'] = []
 
+
+# Campo de entrada de texto para digitar o nome do médico
+medico = st.text_input("Digite o nome do médico:")
 # Campo de entrada de texto para digitar uma nova pauta
 new_pauta = st.text_input("Digite a pauta e pressione 'Adicionar Pauta'")
 
@@ -69,14 +72,14 @@ for i, pauta in enumerate(st.session_state['pautas_list'], start=1):
 
 generated_pautas = ""
 if st.button("Gerar Pautas sem book"):
-    if prompt_text:
+    if prompt_text and medico:
         pautas_text = extract_text_from_pdf(pautas_file) 
         pautas = model.generate_content(f"Extruture o texto a seguir e mande os nomes completos das pautas para post no instagram que estao marcados com datas enumerando elas: {pautas_text}")
         pautas_lines = pautas.text.strip().split("\n")
         generated_pautas = ""
         progress_bar = st.progress(0)
         for i, pauta_line in enumerate(pautas_lines):
-            generated_pautas = model.generate_content(f"@@@System: {prompt_text}@@@ faça a pauta seguindo o layout padrão e coloca o nome da pauta completa no titulo sem alterar: {pauta_line}")
+            generated_pautas = model.generate_content(f"@@@System: {prompt_text}@@@ faça a pauta para {medico} seguindo o layout padrão e coloca o nome da pauta completa no titulo sem alterar: {pauta_line}")
             st.divider()
             st.write(generated_pautas.text)
             progress_bar.progress((i + 1) / len(pautas_lines))
@@ -93,7 +96,7 @@ if st.button("Gerar Pautas com book"):
         generated_pautas = ""
         progress_bar = st.progress(0)
         for i, pauta_line in enumerate(pautas_lines):
-            generated_pautas = model.generate_content(f"@@@System: {prompt_text}@@@ use as informacoes do medico a seguir: {book_text} e faça a pauta seguindo o layout padrão e coloca o nome da pauta completa no titulo sem alterar: {pauta_line}", stream=True)
+            generated_pautas = model.generate_content(f"@@@System: {prompt_text}@@@ use as informacoes do medico a seguir: {book_text} e faça a pauta seguindo o layout padrão e coloca o nome da pauta completa no titulo sem alterar: {pauta_line}")
             st.divider()
             st.write(generated_pautas.text)
             progress_bar.progress((i + 1) / len(pautas_lines))
@@ -106,7 +109,7 @@ if st.button("Gerar Pautas manuais"):
     if st.session_state['pautas_list']:
         # Aqui você pode processar cada pauta individualmente
         for pauta_line in st.session_state['pautas_list']:
-            generated_pauta = f"@@@System: {prompt_text}@@@ faça a pauta seguindo o layout padrão e coloque o nome da pauta completa no titulo sem alterar: {pauta_line}"
+            generated_pauta = f"@@@System: {prompt_text}@@@ faça a pauta para {medico} seguindo o layout padrão e coloque o nome da pauta completa no titulo sem alterar: {pauta_line}"
             # Suponha que model.generate_content() é uma função que você já tem
             generated_pautas = model.generate_content(generated_pauta)
             with st.spinner('Gerando pautas...'):
