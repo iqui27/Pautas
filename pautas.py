@@ -74,8 +74,9 @@ generated_pautas = ""
 if st.button("Gerar Pautas sem book"):
     if prompt_text and medico:
         pautas_text = extract_text_from_pdf(pautas_file) 
-        pautas = model.generate_content(f"pegues os nomes completos das pautas elas estao com a data ao lado para fazer post no instagram mande apenas os nomes das pautas como resposta separadas por *: {pautas_text}")
-        pautas_lines = pautas.text.strip().split("*")
+        pautas = model.generate_content(f"pegues os nomes completos das pautas elas estao com a data ao lado para fazer post no instagram mande apenas os nomes das pautas como resposta: {pautas_text}")
+        st.write(pautas.text)
+        pautas_lines = pautas.text.strip().split("\n")
         st.write(pautas_lines)
         generated_pautas = ""
         progress_bar = st.progress(0)
@@ -92,8 +93,9 @@ if st.button("Gerar Pautas com book"):
     if prompt_text:
         pautas_text = extract_text_from_pdf(pautas_file)
         book_text = extract_text_from_pdf(pdf_file) 
-        pautas = model.generate_content(f"pegues os nomes completos das pautas elas estao com a data ao lado para fazer post no instagram mande apenas os nomes das pautas como resposta separadas por *: {pautas_text}")
-        pautas_lines = pautas.text.strip().split("*")
+        pautas = model.generate_content(f"pegues os nomes completos das pautas elas estao com a data ao lado para fazer post no instagram mande apenas os nomes das pautas como resposta: {pautas_text}")
+        st.write(pautas.text)
+        pautas_lines = pautas.text.strip().split("\n")
         generated_pautas = ""
         progress_bar = st.progress(0)
         for i, pauta_line in enumerate(pautas_lines):
